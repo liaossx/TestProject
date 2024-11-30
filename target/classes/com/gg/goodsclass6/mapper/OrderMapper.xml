@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gg.goodsclass6.mapper.OrderMapper">
+
+    <resultMap id="BaseResultMap" type="com.gg.goodsclass6.entity.Order">
+            <id property="oid" column="oid" jdbcType="CHAR"/>
+            <result property="ordertime" column="ordertime" jdbcType="TIMESTAMP"/>
+            <result property="total" column="total" jdbcType="DECIMAL"/>
+            <result property="status" column="status" jdbcType="INTEGER"/>
+            <result property="address" column="address" jdbcType="VARCHAR"/>
+            <result property="uid" column="uid" jdbcType="CHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        oid,ordertime,total,
+        status,address,uid
+    </sql>
+</mapper>

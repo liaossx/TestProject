@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gg.goodsclass6.mapper.CartitemMapper">
+
+    <resultMap id="BaseResultMap" type="com.gg.goodsclass6.entity.Cartitem">
+            <id property="cartitemid" column="cartItemId" jdbcType="CHAR"/>
+            <result property="quantity" column="quantity" jdbcType="INTEGER"/>
+            <result property="bid" column="bid" jdbcType="CHAR"/>
+            <result property="uid" column="uid" jdbcType="CHAR"/>
+            <result property="shunxu" column="shunxu" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        cartItemId,quantity,bid,
+        uid,shunxu
+    </sql>
+    <resultMap id="CartBookPovoMap" type="com.gg.goodsclass6.povos.CartBookPovo">
+        <association property="cartitem" javaType="com.gg.goodsclass6.entity.Cartitem">
+            <id property="cartitemid" column="cartItemId" jdbcType="CHAR"/>
+            <result property="quantity" column="quantity" jdbcType="INTEGER"/>
+        </association>
+
+        <association property="book" javaType="com.gg.goodsclass6.entity.Book">
+            <id property="bid" column="bid" jdbcType="CHAR"/>
+            <result property="bname" column="bname" jdbcType="VARCHAR"/>
+            <result property="currprice" column="currPrice" jdbcType="DECIMAL"/>
+            <result property="imageB" column="image_b" jdbcType="VARCHAR"/>
+        </association>
+    </resultMap>
+
+    <select id="selectCartBookByUid" resultMap="CartBookPovoMap">
+        SELECT
+                book.image_b,
+                book.bid,
+                book.bname,
+                book.currPrice,
+                cartitem.cartItemId ,
+                cartitem.quantity
+        FROM  cartitem,book
+            WHERE book.bid = cartitem.bid
+            AND cartitem.uid=#{uid}
+    </select>
+
+
+    <select id="selectCartBookPovosByCids" resultMap="CartBookPovoMap">
+        SELECT  book.bid,
+                book.image_b,
+                book.bname,
+                book.currPrice,
+                cartitem.cartItemId,
+                cartitem.quantity
+
+        FROM  book, cartitem
+
+        WHERE book.bid = cartitem.bid
+          AND  cartitem.cartItemId IN
+            <foreach collection="ids" item="id" open="(" separator="," close=")">
+                #{id}
+            </foreach>
+    </select>
+</mapper>

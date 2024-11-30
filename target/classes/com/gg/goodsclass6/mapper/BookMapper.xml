@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gg.goodsclass6.mapper.BookMapper">
+
+    <resultMap id="BaseResultMap" type="com.gg.goodsclass6.entity.Book">
+            <id property="bid" column="bid" jdbcType="CHAR"/>
+            <result property="bname" column="bname" jdbcType="VARCHAR"/>
+            <result property="author" column="author" jdbcType="VARCHAR"/>
+            <result property="price" column="price" jdbcType="DECIMAL"/>
+            <result property="currprice" column="currPrice" jdbcType="DECIMAL"/>
+            <result property="discount" column="discount" jdbcType="DECIMAL"/>
+            <result property="press" column="press" jdbcType="VARCHAR"/>
+            <result property="publishtime" column="publishtime" jdbcType="CHAR"/>
+            <result property="edition" column="edition" jdbcType="INTEGER"/>
+            <result property="pagenum" column="pageNum" jdbcType="INTEGER"/>
+            <result property="wordnum" column="wordNum" jdbcType="INTEGER"/>
+            <result property="printtime" column="printtime" jdbcType="CHAR"/>
+            <result property="booksize" column="booksize" jdbcType="INTEGER"/>
+            <result property="paper" column="paper" jdbcType="VARCHAR"/>
+            <result property="cid" column="cid" jdbcType="CHAR"/>
+            <result property="imageW" column="image_w" jdbcType="VARCHAR"/>
+            <result property="imageB" column="image_b" jdbcType="VARCHAR"/>
+            <result property="shunxu" column="shunxu" jdbcType="INTEGER"/>
+
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        bid,bname,author,
+        price,currPrice,discount,
+        press,publishtime,edition,
+        pageNum,wordNum,printtime,
+        booksize,paper,cid,
+        image_w,image_b,shunxu
+    </sql>
+
+    <select id="selectBookByCase" resultMap="BaseResultMap">
+        select  *  from  book
+        <!--动态where 自动的 添加和 剔除  -->
+        <where>
+            <!--if条件 动态追加 查询字句-->
+            <if  test="cid!=null and cid!=''">
+                cid = #{cid}
+            </if>
+            <!--动态SQL 可以 自动  添加和 剔除 多余的and-->
+            <if test="author!=null and author!=''">
+               and  author = #{author}
+            </if>
+            <!---->
+            <if test="press!=null and press!=''">
+                and press = #{press}
+            </if>
+            <if test="bname!=null and bname != ''">
+                and  bname like concat('%',#{bname},'%')
+            </if>
+
+        </where>
+
+    </select>
+</mapper>

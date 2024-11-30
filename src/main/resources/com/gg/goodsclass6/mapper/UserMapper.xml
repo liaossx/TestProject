@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gg.goodsclass6.mapper.UserMapper">
+
+    <resultMap id="BaseResultMap" type="com.gg.goodsclass6.entity.User">
+            <id property="uid" column="uid" jdbcType="CHAR"/>
+            <result property="loginname" column="loginname" jdbcType="VARCHAR"/>
+            <result property="loginpass" column="loginpass" jdbcType="VARCHAR"/>
+            <result property="email" column="email" jdbcType="VARCHAR"/>
+            <result property="status" column="status" jdbcType="TINYINT"/>
+            <result property="activationcode" column="activationCode" jdbcType="CHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        uid,loginname,loginpass,
+        email,status,activationCode
+    </sql>
+
+    <select id="getPasswordByUsername" resultType="string">
+        SELECT loginpass
+        FROM user
+        WHERE loginname = #{loginname}
+    </select>
+
+    <!-- 更新用户密码 -->
+    <update id="updatePasswordByUsername">
+        UPDATE user
+        SET loginpass = #{loginpass}
+        WHERE loginname = #{loginname}
+    </update>
+</mapper>

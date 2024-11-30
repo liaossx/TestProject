@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gg.goodsclass6.mapper.CategoryMapper">
+
+    <!--自定义结果集映射-->
+    <!--
+    public class CategoryPovo {
+    /*dad*/
+    private Category  dad;
+    /*children*/
+    private List<Category>  children;
+}
+    -->
+    <!--自定义结果集映射 使用resultMap-->
+    <resultMap id="CategoryPovoMap" type="com.gg.goodsclass6.povos.CategoryPovo">
+        <!--单一复杂属性 dad-->
+        <association property="dad" javaType="com.gg.goodsclass6.entity.Category">
+            <!--主键 id biaoqian-->
+            <id column="cid"  property="cid" />
+            <!--非主键字段  映射  result-->
+            <result  column="cname"  property="cname" />
+            <result  column="pid"  property="pid" />
+            <result  column="miaoshu"  property="miaoshu" />
+            <result  column="shunxu"  property="shunxu" />
+
+        </association>
+        <!--多个复杂属性 children -->
+        <!-- column="" 指定自动调用的selectCategoryByPid 的入参-->
+        <!--select="selectCategoryByPid" : 全自动调用select标签后面的发射器-->
+        <collection property="children" ofType="com.gg.goodsclass6.entity.Category"
+            column="cid"
+            select="selectCategoryByPid"
+        >
+            <!--主键 id biaoqian-->
+            <id column="cid"  property="cid" />
+            <!--非主键字段  映射  result-->
+            <result  column="cname"  property="cname" />
+            <result  column="pid"  property="pid" />
+            <result  column="miaoshu"  property="miaoshu" />
+            <result  column="shunxu"  property="shunxu" />
+        </collection>
+
+    </resultMap>
+    <!--加载一级类别-->
+    <select id="selectCategoryByPidIsNull" resultMap="CategoryPovoMap">
+        select *  from category where pid is null
+    </select>
+    <!--加载二级类别-->
+    <!--resultType: 必须都持有的是简单属性，Mybatis可以自动映射-->
+    <!--resultMap:  里面有复杂属性，Mybatis无法直接自动映射了，需要我们自己书写映射规则-->
+    <select id="selectCategoryByPid" resultType="com.gg.goodsclass6.entity.Category">
+        select *  from  category  where  pid = #{pid}
+    </select>
+
+</mapper>

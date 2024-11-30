@@ -1,0 +1,1 @@
+#goods-class8
